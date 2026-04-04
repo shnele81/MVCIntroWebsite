@@ -28,12 +28,12 @@ public class ProductController : Controller
 
     public IActionResult UpdateProduct(int id)
     {
-        Product prod = _productRepository.GetProductById(id);
-        if (prod == null)
+        Product product = _productRepository.GetProductById(id);
+        if (product == null)
         {
             return View("Product Not Found");
         }
-        return View(prod);
+        return View(product);
     }
     
     public IActionResult UpdateProductToDatabase(Product product)
@@ -41,5 +41,17 @@ public class ProductController : Controller
         _productRepository.UpdateProduct(product);
 
         return RedirectToAction("ViewProduct", new { id = product.ProductID });
+    }
+    
+    public IActionResult InsertProduct()
+    {
+        var product = _productRepository.AssignCategory();
+        return View(product);
+    }
+    
+    public IActionResult InsertProductToDatabase(Product productToInsert)
+    {
+        _productRepository.InsertProduct(productToInsert);
+        return RedirectToAction("Index");
     }
 }
